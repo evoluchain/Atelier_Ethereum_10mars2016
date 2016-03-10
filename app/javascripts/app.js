@@ -64,6 +64,7 @@ function refreshProposals() {
                 results
                     .map((x,i) => (i + ":" + x))
             .join('<br>');
+            console.log('refreshProposals Done!');
         })
     })
 };
@@ -85,6 +86,6 @@ window.onload = function() {
 
         displayAccounts();
 
-        //refreshProposals();
+        refreshProposals();
     });
 }

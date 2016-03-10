@@ -34,6 +34,11 @@ Democracy.deployed()
 => Democracy {contract: h, address: "0xc480993a2647ef7da2707d16ccc4eed2b5873570", web3: r}...
 
 ## web console
+var dem = Democracy.deployed();
 dem.votingTimeInMinutes().then(function(res){console.log(res)})
 
 dem.votingTimeInMinutes().then(function(res){console.log(res.toString())})
+
+
+dem.addProposal("Buy More Beers !", {from: web3.eth.coinbase})
+
