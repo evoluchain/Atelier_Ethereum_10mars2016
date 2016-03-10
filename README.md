@@ -24,3 +24,16 @@ web3.eth.sendTransaction({from: web3.eth.coinbase, to: web3.eth.accounts[1], val
 web3.eth.blockNumber
 
 => 1
+
+## deploy contract (console)
+truffle deploy
+
+## check deployed (web console)
+Democracy.deployed()
+
+=> Democracy {contract: h, address: "0xc480993a2647ef7da2707d16ccc4eed2b5873570", web3: r}...
+
+## web console
+dem.votingTimeInMinutes().then(function(res){console.log(res)})
+
+dem.votingTimeInMinutes().then(function(res){console.log(res.toString())})
