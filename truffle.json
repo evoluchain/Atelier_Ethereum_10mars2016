@@ -10,7 +10,7 @@
     "images/": "images/"
   },
   "deploy": [
-    "MetaCoin"
+    "Democracy"
   ],
   "rpc": {
     "host": "localhost",
