@@ -206,13 +206,13 @@ var Web3 = require("web3");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("Democracy error: Please call setProvider() first before calling new().");
+      throw new Error("Migrations error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("Democracy error: contract binary not set. Can't deploy new instance.");
+      throw new Error("Migrations error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -231,7 +231,7 @@ var Web3 = require("web3");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("Democracy contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of Democracy: " + unlinked_libraries);
+      throw new Error("Migrations contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of Migrations: " + unlinked_libraries);
     }
 
     var self = this;
@@ -272,7 +272,7 @@ var Web3 = require("web3");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to Democracy.at(): " + address);
+      throw new Error("Invalid address passed to Migrations.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -283,7 +283,7 @@ var Web3 = require("web3");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: Democracy not deployed or address not set.");
+      throw new Error("Cannot find deployed address: Migrations not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -325,87 +325,21 @@ var Web3 = require("web3");
   "default": {
     "abi": [
       {
-        "constant": true,
+        "constant": false,
         "inputs": [
           {
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "name": "proposals",
-        "outputs": [
-          {
-            "name": "description",
-            "type": "string"
-          },
-          {
-            "name": "end",
-            "type": "uint256"
-          },
-          {
-            "name": "adopted",
-            "type": "bool"
-          }
-        ],
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "",
+            "name": "new_address",
             "type": "address"
           }
         ],
-        "name": "members",
-        "outputs": [
-          {
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "index",
-            "type": "uint256"
-          }
-        ],
-        "name": "executeProposal",
-        "outputs": [],
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "description",
-            "type": "string"
-          }
-        ],
-        "name": "addProposal",
+        "name": "upgrade",
         "outputs": [],
         "type": "function"
       },
       {
         "constant": true,
         "inputs": [],
-        "name": "nbProposals",
-        "outputs": [
-          {
-            "name": "nbProposals",
-            "type": "uint256"
-          }
-        ],
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "votingTimeInMinutes",
+        "name": "last_completed_migration",
         "outputs": [
           {
             "name": "",
@@ -430,56 +364,23 @@ var Web3 = require("web3");
         "constant": false,
         "inputs": [
           {
-            "name": "index",
+            "name": "completed",
             "type": "uint256"
-          },
-          {
-            "name": "vote",
-            "type": "bool"
           }
         ],
-        "name": "vote",
+        "name": "setCompleted",
         "outputs": [],
         "type": "function"
       },
       {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "newMember",
-            "type": "address"
-          }
-        ],
-        "name": "addMember",
-        "outputs": [],
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "newVotingTime",
-            "type": "uint256"
-          }
-        ],
-        "name": "setVotingTime",
-        "outputs": [],
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "name": "votingTime",
-            "type": "uint256"
-          }
-        ],
+        "inputs": [],
         "type": "constructor"
       }
     ],
-    "unlinked_binary": "0x60606040526040516020806107d383395060806040525160018054600160a060020a03191633908117918290556046918391600160a060020a039182169116146055576002565b50610771806100626000396000f35b806000600050819055505056606060405236156100825760e060020a6000350463013cf08b811461008457806308ae4b0c146101155780630d61b519146101305780632fdae3c5146101845780635c4f4fd4146101f257806365a8285a146102085780638da5cb5b14610211578063c9d27afe14610223578063ca6d56dc14610253578063d7c8197614610274575b005b61029560043560038054829081101561000257506000527fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85e6005909102908101547fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85f8201547fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85b929092019160ff1683565b61033160043560026020526000908152604090205460ff1681565b6100826004356000600060006000846003600050818154811015610002575082527fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85e60058202015442101561036257610002565b6040805160206004803580820135601f810184900484028501840190955284845261008294919360249390929184019190819084018382808284375094965050505050505033600160a060020a0316600090815260026020526040812054819060ff16151561043657610002565b6003545b60408051918252519081900360200190f35b6101f660005481565b610345600154600160a060020a031681565b61008260043560243533600160a060020a031660009081526002602052604090205460ff1615156105da57610002565b61008260043560015433600160a060020a0390811691161461074857610002565b61008260043560015433600160a060020a0390811691161461076c57610002565b604080516020810184905282151591810191909152606080825284546002600182161561010002600019019091160490820181905281906080820190869080156103205780601f106102f557610100808354040283529160200191610320565b820191906000526020600020905b81548152906001019060200180831161030357829003601f168201915b505094505050505060405180910390f35b604080519115158252519081900360200190f35b60408051600160a060020a03929092168252519081900360200190f35b60038054879081101561000257506000908152600587027fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85d01935091505b82548210156103e1578282815481101561000257600091825260209182902082820401549190066101000a900460ff1615610422576001949094019361042a565b8385111561041a5760016003600050878154811015610002579060005260206000209060050201600050600401805460ff191690911790555b505050505050565b600193909301925b600191909101906103a0565b600380546001810180835590919082801582901161046d5760050281600502836000526020600020918201910161046d9190610506565b50505091506003600050828154811015610002579060005260206000209060050201600050905082816000016000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061059657805160ff19168380011785555b506105c6929150610560565b50506000600382015560048101805460ff191690556005015b8082111561059257600060008201600050805460018160011615610100020316600290046000825580601f1061057457505b5060028201600050805460008255601f0160209004906000526020600020908101906104ed91905b808211156105925760008155600101610560565b601f0160209004906000526020600020908101906105389190610560565b5090565b828001600101855582156104e1579182015b828111156104e15782518260005055916020019190600101906105a8565b5050600054603c0242016003820155505050565b8160036000508181548110156100025790600052602060002090600502016000506003015442111561060b57610002565b82600360005081815481101561000257906000526020600020906005020160005033600160a060020a03166000908152600191909101602052604090205460ff161561065657610002565b60038054859081101561000257906000526020600020906005020160005060020180546001810180835582818380158290116106b357601f016020900481601f016020900483600052602060002091820191016106b39190610560565b5050509190906000526020600020906020918282040191900685909190916101000a81548160ff021916908302179055505060016003600050858154811015610002575050600160a060020a03331660009081526005959095027fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85c016020526040909420805460ff1916909417909355505050565b600160a060020a03166000908152600260205260409020805460ff19166001179055565b60005556",
-    "updated_at": 1472824603854,
-    "links": {},
-    "address": "0x311d723572020b650122806a691713aa83809b55"
+    "unlinked_binary": "0x606060405260008054600160a060020a03191633179055610130806100246000396000f3606060405260e060020a60003504630900f010811461003c578063445df0ac146100c05780638da5cb5b146100c9578063fdacd576146100db575b005b61003a60043560008054600160a060020a039081163390911614156100bc57604080516001547ffdacd576000000000000000000000000000000000000000000000000000000008252600482015290518392600160a060020a0384169263fdacd5769260248281019392829003018183876161da5a03f115610002575050505b5050565b61010160015481565b610113600054600160a060020a031681565b61003a60043560005433600160a060020a03908116911614156100fe5760018190555b50565b60408051918252519081900360200190f35b60408051600160a060020a03929092168252519081900360200190f3",
+    "updated_at": 1472824603856,
+    "address": "0xa82de2d891c49054fb416744d09918cd1f1e1e97",
+    "links": {}
   }
 };
 
@@ -545,7 +446,7 @@ var Web3 = require("web3");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "Democracy";
+  Contract.contract_name   = Contract.prototype.contract_name   = "Migrations";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.1.2";
 
   var properties = {
@@ -582,6 +483,6 @@ var Web3 = require("web3");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.Democracy = Contract;
+    window.Migrations = Contract;
   }
 })();
