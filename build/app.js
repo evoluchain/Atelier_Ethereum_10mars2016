@@ -43453,8 +43453,8 @@ module.exports = transfer;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],309:[function(require,module,exports){
 module.exports = {
-  "Democracy": require("/Users/fab/Documents/EvoluChain/Atelier_Ethereum_10mars2016/build/contracts/Democracy.sol.js"),
   "Migrations": require("/Users/fab/Documents/EvoluChain/Atelier_Ethereum_10mars2016/build/contracts/Migrations.sol.js"),
+  "Democracy": require("/Users/fab/Documents/EvoluChain/Atelier_Ethereum_10mars2016/build/contracts/Democracy.sol.js"),
 };
 },{"/Users/fab/Documents/EvoluChain/Atelier_Ethereum_10mars2016/build/contracts/Democracy.sol.js":1,"/Users/fab/Documents/EvoluChain/Atelier_Ethereum_10mars2016/build/contracts/Migrations.sol.js":2}]},{},[309])(309)
 });
